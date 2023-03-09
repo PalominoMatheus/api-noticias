@@ -1,23 +1,31 @@
-import logo from './logo.svg';
+import {useEffect, useState} from 'react';
+import axios from 'axios';
 import './App.css';
 
+
 function App() {
+
+  const [posts,setPosts] = useState([]);  
+
+  useEffect(() =>{
+    axios.get('http://localhost/api_noticias/')
+    .then(function(res){
+      setPosts(res.data);
+    })
+  },[])
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      {
+        posts.map(function(val){
+          return(
+            <div className='containerNoticia'>
+              <img src={val.imagem}/>
+              <p>{val.conteudo}</p>
+            </div>
+          )
+        })
+      }  
     </div>
   );
 }
